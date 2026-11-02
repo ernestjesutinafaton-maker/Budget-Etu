@@ -1,0 +1,29 @@
+.fiche {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  max-width: 400px;
+}
+
+.montant {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.danger {
+  background-color: #b71c1c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+}
+
+.erreur {
+  color: #b71c1c;
+}

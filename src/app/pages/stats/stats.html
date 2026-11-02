@@ -1,0 +1,48 @@
+<h2>Statistiques du mois ({{ mois }})</h2>
+
+@if (svc.depenses.isLoading()) {
+  <p>Chargement...</p>
+} @else if (svc.depenses.error()) {
+  <p class="erreur">Impossible de charger les dépenses.</p>
+  <button (click)="svc.depenses.reload()">Réessayer</button>
+} @else {
+  <label class="budget">
+    Budget mensuel (€) :
+    <input
+      type="number"
+      min="0"
+      [value]="svc.budgetMensuel()"
+      (input)="changerBudget($any($event.target).valueAsNumber)"
+    />
+  </label>
+
+  @if (depasse()) {
+    <p class="alerte">Budget dépassé de {{ -reste() | currency: 'EUR' }} !</p>
+  }
+
+  <div class="chiffres">
+    <p>Total dépensé : <strong>{{ totalMois() | currency: 'EUR' }}</strong></p>
+    <p>Reste à dépenser : <strong>{{ reste() | currency: 'EUR' }}</strong></p>
+    <p>Catégorie la plus coûteuse : <strong>{{ categoriePlusCouteuse() ?? 'aucune' }}</strong></p>
+  </div>
+
+  <div class="barre">
+    <div class="remplissage" [class.depasse]="depasse()" [style.width.%]="pourcentage()"></div>
+  </div>
+  <p>{{ pourcentage() | number: '1.0-0' }} % du budget consommé</p>
+
+  @defer (on viewport) {
+    <h3>Total par catégorie</h3>
+    @for (c of parCategorie(); track c.categorie) {
+      <div class="ligne-categorie">
+        <span class="nom">{{ c.categorie }}</span>
+        <div class="barre petite">
+          <div class="remplissage" [style.width.%]="totalMois() > 0 ? (c.montant / totalMois()) * 100 : 0"></div>
+        </div>
+        <span>{{ c.montant | currency: 'EUR' }}</span>
+      </div>
+    }
+  } @placeholder {
+    <p>Détail par catégorie…</p>
+  }
+}

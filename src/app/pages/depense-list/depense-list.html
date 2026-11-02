@@ -1,0 +1,45 @@
+@if (depenseService.depenses.isLoading()) {
+  <p>Chargement des dépenses...</p>
+} @else if (depenseService.depenses.error()) {
+  <p class="erreur">Erreur lors du chargement des données. json-server est-il lancé ?</p>
+  <button (click)="depenseService.depenses.reload()">Réessayer</button>
+} @else if (depenseService.depenses.hasValue()) {
+  <div class="filtres-container">
+    <div class="champs">
+      <label>
+        Mois :
+        <input type="month" [value]="mois()" (input)="mois.set($any($event.target).value)" />
+      </label>
+
+      <label>
+        Catégorie :
+        <select [value]="categorie()" (change)="categorie.set($any($event.target).value)">
+          <option value="">Toutes</option>
+          @for (cat of categoriesList; track cat) {
+            <option [value]="cat">{{ cat }}</option>
+          }
+        </select>
+      </label>
+
+      <label>
+        Recherche :
+        <input
+          type="search"
+          placeholder="Libellé..."
+          [value]="recherche()"
+          (input)="recherche.set($any($event.target).value)"
+        />
+      </label>
+    </div>
+
+    <h2 class="total">Total : {{ total() | currency: 'EUR' }}</h2>
+  </div>
+
+  <div class="liste-depenses">
+    @for (d of depensesFiltrees(); track d.id) {
+      <app-depense-card [depense]="d" />
+    } @empty {
+      <p>Aucune dépense pour cette sélection.</p>
+    }
+  </div>
+}
