@@ -1,59 +1,44 @@
-# BudgetEtu
+# Budget Étudiant
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.3.
- 
-## Development server
- 
-To start a local development server, run:
+Une application web pour suivre ses dépenses d'étudiant et tenir son budget du mois.
+Réalisée en **Angular** pendant ma 2<sup>e</sup> année de Bachelor Informatique à l'EPSI Lyon.
 
-```bash
-ng serve
-```
+## Fonctionnalités
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Liste des dépenses**, de la plus récente à la plus ancienne, avec un badge de couleur par catégorie :
+  Alimentation, Logement, Transport, Loisirs, Études.
+- **Ajout, modification, détail et suppression** d'une dépense.
+- **Statistiques du mois** : total dépensé, total par catégorie, et budget mensuel avec une alerte quand il est dépassé.
+- Le **budget mensuel** est mémorisé dans le navigateur (localStorage).
+- Une page « introuvable » pour les adresses inconnues.
 
-## Code scaffolding
+## Technologies
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+| Partie | Outils |
+|---|---|
+| Interface | Angular 22 : composants autonomes, signaux, `httpResource`, routage |
+| Langage | TypeScript, RxJS |
+| API simulée | json-server, avec les données de `db.json` |
+| Tests | Vitest |
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## Lancer le projet
 
 ```bash
-ng build
+npm install
+npx json-server db.json --port 3000   # l'API des dépenses, sur http://localhost:3000
+npm start                             # l'application, sur http://localhost:4200
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Tests
 
 ```bash
-ng test
+npm test
 ```
 
-## Running end-to-end tests
+## Organisation du code
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
 ```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+src/app/core/     le service des dépenses (appels à l'API, tri, budget)
+src/app/pages/    les écrans : liste, ajout et modification, détail, statistiques
+src/app/shared/   les composants réutilisables (carte, badge, en-tête) et les calculs
+```
